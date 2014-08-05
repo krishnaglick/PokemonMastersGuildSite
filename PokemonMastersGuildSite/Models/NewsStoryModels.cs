@@ -9,6 +9,7 @@ namespace PokemonMastersGuildSite.Models
     {
         public int ID { get; set; }
         public string Username { get; set; }
+        public string postTitle { get; set; }
         public string postText { get; set; }
         public DateTime postDate { get; set; }
         public ICollection<NewsStoryTag> newsStoryTags { get; set; }

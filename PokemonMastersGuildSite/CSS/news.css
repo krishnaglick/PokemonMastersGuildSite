@@ -1,0 +1,14 @@
+﻿.newsWrapper
+{
+    border: 1px groove cyan;
+    width: 60%;
+    margin-left: 20%;
+}
+.newsItem
+{
+    border: 1px ridge black;
+}
+.newsTag
+{
+    font-size: 9px;
+}

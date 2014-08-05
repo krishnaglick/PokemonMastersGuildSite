@@ -1,18 +1,19 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
+<link href="~/CSS/news.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "News";
 }
 
-@ViewBag.stories
-
-<ol>
-@foreach (var item in ViewBag.bullshitTitles)
-{
-    <li>@item.postText : @foreach (var tag in item.newsStoryTags) {@tag.tagName}</li>
-
-}
-</ol>
+<div class="newsWrapper">
+    @foreach(var post in ViewBag.posts)
+    {
+        <div class="newsItem">
+            <h3>@post.postTitle</h3>
+            By @post.Username on @post.postDate
+            <p>@post.postText</p>
+            <p class="newsTag">@foreach (var tag in post.newsStoryTags) { @tag.tagName }</p>
+        </div>
+    }
+</div>
