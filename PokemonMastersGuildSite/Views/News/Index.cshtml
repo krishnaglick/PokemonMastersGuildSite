@@ -12,9 +12,7 @@
 <ol>
 @foreach (var item in ViewBag.bullshitTitles)
 {
-    <li>@item.postText : @foreach (var tag in
-                             item.newsStoryTags) 
-                             {@tag.tagName}</li>
+    <li>@item.postText : @foreach (var tag in item.newsStoryTags) {@tag.tagName}</li>
 
 }
 </ol>

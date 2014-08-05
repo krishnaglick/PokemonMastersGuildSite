@@ -30,11 +30,12 @@ namespace PokemonMastersGuildSite.Models
             tagName = tName;
             tagDesc = tDesc;
         }
+        public NewsStoryTag() { }
     }
 
     public class NewsStoryContext : DbContext
     {
         public DbSet<NewsStory> NewsStories { get; set; }
-        public DbSet<NewsStoryTag> NewsStoryTags { get; set; }
+        public virtual DbSet<NewsStoryTag> NewsStoryTags { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace PokemonMastersGuildSite.Controllers
         Models.NewsStoryContext nsc = new Models.NewsStoryContext();
         public ActionResult Index()
         {
-            ViewBag.bullshitTitles = nsc.NewsStories.ToArray<Models.NewsStory>();
+            ViewBag.bullshitTitles = nsc.NewsStories.Include("newsStoryTags").ToArray<Models.NewsStory>();
             ViewBag.stories = ViewBag.bullshitTitles.Length;
             return View();
         }
@@ -42,6 +42,7 @@ namespace PokemonMastersGuildSite.Controllers
             ns.postText = randStr();
             Models.NewsStoryTag nst = new Models.NewsStoryTag(randStr(), randStr());
             ns.newsStoryTags.Add(nst);
+            nsc.NewsStoryTags.Add(nst);
             ns.postDate = System.DateTime.Now;
 
 
