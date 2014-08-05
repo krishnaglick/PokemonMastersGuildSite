@@ -42,7 +42,6 @@ namespace PokemonMastersGuildSite.Controllers
             ns.postText = randStr();
             Models.NewsStoryTag nst = new Models.NewsStoryTag(randStr(), randStr());
             ns.newsStoryTags.Add(nst);
-            nsc.NewsStoryTags.Add(nst);
             ns.postDate = System.DateTime.Now;
 
 
