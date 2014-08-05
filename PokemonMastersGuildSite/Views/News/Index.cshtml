@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "News";
+}
+
+@ViewBag.stories
+
+<ol>
+@foreach (var item in ViewBag.bullshitTitles)
+{
+    <li>@item.postText : @foreach (var tag in
+                             item.newsStoryTags) 
+                             {@tag.tagName}</li>
+
+}
+</ol>
