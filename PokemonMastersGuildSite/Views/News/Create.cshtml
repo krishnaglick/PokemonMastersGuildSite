@@ -1,7 +1,10 @@
 ﻿@{
-    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<link href="~/CSS/news.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "News";
+}
 
-<p>Use this area to provide additional information.</p>
+<h1>News</h1>
+<input type="button" id="addNews" value="New Post" onclick="location.href = '@Url.Action("Create")'" />

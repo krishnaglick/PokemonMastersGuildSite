@@ -37,6 +37,6 @@ namespace PokemonMastersGuildSite.Models
     public class NewsStoryContext : DbContext
     {
         public DbSet<NewsStory> NewsStories { get; set; }
-        public virtual DbSet<NewsStoryTag> NewsStoryTags { get; set; }
+        public DbSet<NewsStoryTag> NewsStoryTags { get; set; }
     }
 }
