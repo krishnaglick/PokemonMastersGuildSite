@@ -70,3 +70,6 @@ c:\users\prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSit
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\obj\Debug\PokemonMastersGuildSite.csprojResolveAssemblyReference.cache
 C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\obj\Debug\PokemonMastersGuildSite.Migrations.Initial.resources
 C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\obj\Debug\PokemonMastersGuildSite.csproj.GenerateResource.Cache
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\AutoMapper.Net4.dll
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\AutoMapper.dll
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\AutoMapper.xml

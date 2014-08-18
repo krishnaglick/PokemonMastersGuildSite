@@ -7,6 +7,7 @@ namespace PokemonMastersGuildSite.Models
 {
     public class NewsStory
     {
+        [Key]
         public int ID { get; set; }
         public string Username { get; set; }
         public string postTitle { get; set; }

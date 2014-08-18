@@ -3,12 +3,34 @@
     border: 1px groove cyan;
     width: 60%;
     margin-left: 20%;
+    text-align: center;
 }
 .newsItem
 {
     border: 1px ridge black;
 }
-.newsTag
+.newsTags
 {
     font-size: 9px;
+}
+
+.newsNewPostWrapper
+{
+    border: 1px groove cyan;
+    width: 60%;
+    margin-left: 20%;
+    text-align: center;
+    overflow: auto;
+}
+
+.newNewsPostButton
+{
+    display: block;
+    margin: 0 auto;
+}
+
+.tagSelectionArea
+{
+    margin: auto;
+    width: inherit;
 }
