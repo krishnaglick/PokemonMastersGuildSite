@@ -24,7 +24,7 @@ namespace PokemonMastersGuildSite.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.tags = nsc.NewsStoryTags.Select(t => new SelectListItem { Value = t.tagName, Text = t.tagName });
+            ViewBag.tags = "['" + string.Join("', '", nsc.NewsStoryTags.Select(t => t.tagName).ToArray<string>()) + "']";
             return View();
         }
         
@@ -35,9 +35,14 @@ namespace PokemonMastersGuildSite.Controllers
             var newNewsStory = new Models.NewsStory();
 
             List<Models.NewsStoryTag> newsTags = new List<Models.NewsStoryTag>();
-            foreach(var tag in tags)
+
+            if (tags != null)
             {
-                newsTags.Add(nsc.NewsStoryTags.Find(tag));
+                foreach (var tag in tags)
+                {
+                    if (nsc.NewsStoryTags.Find(tag) != null)
+                        newsTags.Add(nsc.NewsStoryTags.Find(tag));
+                }
             }
 
             newNewsStory.newsStoryTags = newsTags;

@@ -2,78 +2,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/CSS/news.css" rel="stylesheet" type="text/css" />
-<link href="http://code.jquery.com/jquery-2.1.1.js" rel="prefetch" type="text/javascript" />
+<link href="~/CSS/chosen.css" rel="stylesheet" type="text/css" />
+@Scripts.Render("~/Scripts/Knockout-3.2.0.js")
+@Scripts.Render("~/Scripts/chosen.js");
+
 
 @{ ViewBag.Title = "News"; }
 <h1>Create News Post</h1>
 
 
 <script type="text/javascript">
-    function addTags() {
-        $('#newPostTagSelectionList option:selected').each(function () {
-            $('#newsPostTagsList').append($(this));
-        });
-    }
-
-    function removeTags() {
-        $('#newsPostTagsList option:selected').each(function () {
-            $('#newPostTagSelectionList').append($(this));
-        });
-    }
 
     function postNews() {
-        title = $('#newsPostTitle').val();
-        post = $('#newsPostText').val();
-        tags = $('#newsPostTagsList').children().map(function () { return $(this).val(); }).get();
+        errorMsg = "";
+        title = $('#newsPostTitle').val() != '' ? $('#newsPostTitle').val() : errorMsg = "Please enter in a title!\n";
+        post = $('#newsPostText').val() != '' ? $('#newsPostTitle').val() : errorMsg += "Please enter in some news!\n";
+        tags = $('#koTest');
+        if (errorMsg != "") {
+            alert(errorMsg);
+            return;
+        }
         $.ajax({
             type: "POST",
             url: '@Url.Action("Create", "News")',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ 'postTitle': title, 'postText': post, 'tags': tags }),
+            data: ko.toJSON(vm, $('div.newsNewPostWrapper')),
             cache: false,
             traditional: true,
             dataType: "json",
             success: function (result) {
                 console.log(result);
+                vm.postText("");
+                vm.postTitle("");
+                tags.val('').trigger('chosen:updated');
+                vm.tags([]);
             },
             error: function (result) {
                 console.log(result);
+                console.log("bad");
             }
         });
     }
 </script>
 
+<div class="newsNewPostWrapper">
+    <p>
+        <label for="newsPostTitle" id="newsPostTitleLabel">Post Title</label>
+    </p>
+    <p>
+        <input type="text" id="newsPostTitle" data-bind="value: postTitle, text: postTitle" />
+    </p>
+    <p>
+        <label for="newsPostText" id="newsPostTextLabel">Post Text</label>
+    </p>
+    <p>
+        <textarea id="newsPostText" data-bind="value: postText, text: postText"></textarea>
+    </p>
+    <p>
+        <label id="newsPostTagsListLabel">Tags</label>
+    </p>
+    <p>
+        <select multiple="multiple" id="koTest" class="aaa"
+                data-bind="options: optionValues(), selectedOptions: tags"></select>
+    </p>
+</div>
+<div class="newsNewPostWrapper" style="margin-top: 20px;">
+    <input value="Submit" type="button" id="Post" style="float: left;"
+        onclick="postNews()" />
+</div>
 
 
-@using (Html.BeginForm("Create", "NewsController", FormMethod.Post, new { id = "newNewsPost" }))
-{
-    <form id="newNewsPost">
-        <div class="newsNewPostWrapper">
-            <p>
-                <label for="newsPostTitle" id="newsPostTitleLabel">Post Title</label>
-            </p>
-            <p>
-                <input type="text" id="newsPostTitle" />
-            </p>
-            <p>
-                <label for="newsPostText" id="newsPostTextLabel">Post Text</label>
-            </p>
-            <p>
-                <textarea id="newsPostText"></textarea>
-            </p>
-            <p>
-                <label id="newsPostTagsListLabel">Tags</label>
-            </p>
-            <p class ="tagSelectionArea">
-                <select id="newsPostTagsList" multiple="multiple" style="float: right;"></select>
-                @Html.ListBox("A Box", (IEnumerable<SelectListItem>)ViewBag.tags, new { id = "newPostTagSelectionList", style = "float: left;" })
-                <input value="-->" type="button" id="add" onclick="addTags()" class="newNewsPostButton" />
-                <input value="<--" type="button" id="remove" onclick="removeTags()" class="newNewsPostButton" />
-            </p>
-        </div>
-        <div class="newsNewPostWrapper" style="margin-top: 20px;">
-            <input value="Submit" type="button" id="Post" style="float: left;"
-                onclick="postNews()" />
-        </div>
-    </form>
-}
+<script type="text/javascript">
+    //This shit's down here cause html is dumb.
+    var viewModel = function(){
+        this.postTitle = ko.observable();
+        this.postText = ko.observable();
+        this.tags = ko.observable();
+        this.optionValues = function () {
+            return @Html.Raw(ViewBag.tags)
+        }
+    };
+    var vm = new viewModel();
+    ko.applyBindings(vm);
+
+    $(document).on("ready", function () {
+        $('#koTest').chosen({width: "200px"});
+    })
+</script>
