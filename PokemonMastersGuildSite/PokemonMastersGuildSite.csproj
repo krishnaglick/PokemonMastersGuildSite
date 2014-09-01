@@ -204,10 +204,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WOWSharp.Community, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WOWSharp.2.0.3\lib\portable-net40+sl50+wp80+win\WOWSharp.Community.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -261,6 +257,13 @@
       <DependentUpon>PokemonMasters.mdf</DependentUpon>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="CSS\fancybox\blank.gif" />
+    <Content Include="CSS\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="CSS\fancybox\fancybox_loading.gif" />
+    <Content Include="CSS\fancybox\fancybox_overlay.png" />
+    <Content Include="CSS\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="CSS\fancybox\fancybox_sprite.png" />
+    <Content Include="CSS\fancybox\fancybox.css" />
     <Content Include="CSS\news.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -320,10 +323,14 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="CSS\chosen.css" />
     <Content Include="Scripts\chosen.js" />
+    <Content Include="Scripts\fancybox\fancybox.media.js" />
+    <Content Include="Scripts\guildUtils.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\fancybox\fancybox.js" />
+    <Content Include="Scripts\fancybox\fancybox.pack.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

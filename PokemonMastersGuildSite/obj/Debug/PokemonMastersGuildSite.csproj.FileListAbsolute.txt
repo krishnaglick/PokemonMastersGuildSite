@@ -78,7 +78,6 @@ C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSit
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\Microsoft.Threading.Tasks.Extensions.dll
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\System.Net.Http.Extensions.dll
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\System.Net.Http.Primitives.dll
-C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\WOWSharp.Community.dll
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\Microsoft.Threading.Tasks.xml
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\Microsoft.Threading.Tasks.Extensions.xml
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\Microsoft.Threading.Tasks.Extensions.Desktop.xml

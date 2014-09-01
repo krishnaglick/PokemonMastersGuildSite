@@ -1,16 +1,59 @@
 ﻿@{
         Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
+@Scripts.Render("~/Scripts/Knockout-3.2.0.js")
+@Scripts.Render("~/Scripts/fancybox/fancybox.js")
+@Scripts.Render("~/Scripts/fancybox/fancybox.pack.js")
+@Scripts.Render("~/Scripts/fancybox/fancybox.media.js")
+@Scripts.Render("~/Scripts/guildUtils.js")
+<link href="~/CSS/fancybox/fancybox.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Guild Roster";
 }
 
-<h2>The Who's and What's</h2>
 
-<p>Hello from our View Template!</p>
+<script type="text/javascript">
+$.ajax({
+    type: "GET",
+    url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members&jsonp=bindMembers',
+    dataType: "JSONP",
+});
+
+function bindMembers(data) {
+    var mappedMembers = $.map(data.members, function (member) {
+        return {
+            Name: member.character.name,
+            Rank: member.rank,
+            memberUrl: "http://us.battle.net/wow/en/character/blackrock/" + member.character.name + "/simple",
+            lb: "fancybox"
+        };
+    }).sort(function (a, b) {
+        return a.Rank - b.Rank;
+    });
+    ko.applyBindings({
+        guildMembers: mappedMembers
+    });
+}
+</script>
+
+<table>
+    <thead>
+        <tr>
+            <th>Character Name</th>
+            <th>Rank</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: guildMembers">
+        <tr>
+            <td><a data-bind="attr: {href: memberUrl, class: lb}, text: Name"></a></td>
+            <td data-bind="text: getRankName(Rank)"></td>
+        </tr>
+    </tbody>
+</table>
 
 
-@ViewBag.Roster
-@ViewBag.Member
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".fancybox").fancybox();
+    });
+</script>
