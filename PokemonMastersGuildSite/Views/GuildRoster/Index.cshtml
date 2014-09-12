@@ -1,39 +1,38 @@
 ﻿@{
-        Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
-@Scripts.Render("~/Scripts/fancybox/fancybox.js")
-@Scripts.Render("~/Scripts/fancybox/fancybox.pack.js")
-@Scripts.Render("~/Scripts/fancybox/fancybox.media.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
-<link href="~/CSS/fancybox/fancybox.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Guild Roster";
 }
 
 
 <script type="text/javascript">
-$.ajax({
-    type: "GET",
-    url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members&jsonp=bindMembers',
-    dataType: "JSONP",
-});
+    $.ajax({
+        type: "GET",
+        url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members&jsonp=bindMembers',
+        dataType: "JSONP"
+    });
 
-function bindMembers(data) {
-    var mappedMembers = $.map(data.members, function (member) {
-        return {
-            Name: member.character.name,
-            Rank: member.rank,
-            memberUrl: "http://us.battle.net/wow/en/character/blackrock/" + member.character.name + "/simple",
-            lb: "fancybox"
-        };
-    }).sort(function (a, b) {
-        return a.Rank - b.Rank;
-    });
-    ko.applyBindings({
-        guildMembers: mappedMembers
-    });
-}
+    function bindMembers(data) {
+        var mappedMembers = $.map(data.members, function (member) {
+            return {
+                Name: member.character.name,
+                Rank: member.rank,
+                memberUrl: "/Static/ViewPlayer.html?name=" + member.character.name
+            };
+        }).sort(function (a, b) {
+            return a.Rank - b.Rank;
+        });
+        ko.applyBindings({
+            guildMembers: mappedMembers
+        });
+    }
+
+    function loadModal() {
+        $('#myModal').load(this.href).dialog('open');
+    }
 </script>
 
 <table>
@@ -45,15 +44,21 @@ function bindMembers(data) {
     </thead>
     <tbody data-bind="foreach: guildMembers">
         <tr>
-            <td><a data-bind="attr: {href: memberUrl, class: lb}, text: Name"></a></td>
+            <td><a id="aPlayer" onclick="loadModal()"
+                   data-bind="attr: {href: memberUrl}, text: Name"></a></td>
             <td data-bind="text: getRankName(Rank)"></td>
         </tr>
     </tbody>
 </table>
 
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".fancybox").fancybox();
-    });
-</script>
+<div id="myModal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
+        <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>

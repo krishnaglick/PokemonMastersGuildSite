@@ -125,6 +125,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -257,14 +263,9 @@
       <DependentUpon>PokemonMasters.mdf</DependentUpon>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="CSS\fancybox\blank.gif" />
-    <Content Include="CSS\fancybox\fancybox_loading%402x.gif" />
-    <Content Include="CSS\fancybox\fancybox_loading.gif" />
-    <Content Include="CSS\fancybox\fancybox_overlay.png" />
-    <Content Include="CSS\fancybox\fancybox_sprite%402x.png" />
-    <Content Include="CSS\fancybox\fancybox_sprite.png" />
-    <Content Include="CSS\fancybox\fancybox.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="CSS\news.css" />
+    <Content Include="CSS\select2.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -319,18 +320,25 @@
     </None>
     <Content Include="Content\Site.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Images\monk.bmp" />
+    <Content Include="Images\noclass.bmp" />
+    <Content Include="Images\warrior.bmp" />
+    <Content Include="Images\priest.bmp" />
+    <Content Include="Images\rogue.bmp" />
+    <Content Include="Images\shaman.bmp" />
+    <Content Include="Images\warlock.bmp" />
+    <Content Include="Images\mage.bmp" />
+    <Content Include="Images\paladin.bmp" />
+    <Content Include="Images\hunter.bmp" />
+    <Content Include="Images\druid.bmp" />
+    <Content Include="Images\dk.bmp" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="CSS\chosen.css" />
-    <Content Include="Scripts\chosen.js" />
-    <Content Include="Scripts\fancybox\fancybox.media.js" />
     <Content Include="Scripts\guildUtils.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\fancybox\fancybox.js" />
-    <Content Include="Scripts\fancybox\fancybox.pack.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -341,7 +349,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Static\ViewPlayer.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -381,6 +391,7 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

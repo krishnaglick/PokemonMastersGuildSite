@@ -84,3 +84,7 @@ C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSit
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\System.Net.Http.Extensions.xml
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\System.Net.Http.Primitives.xml
 C:\Users\Prometheus\Documents\Visual Studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\obj\Debug\PokemonMastersGuildSite.csproj.App.config
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\PagedList.dll
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\PagedList.Mvc.dll
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\PagedList.xml
+C:\Users\Prometheus\documents\visual studio 2013\Projects\PokemonMastersGuildSite\PokemonMastersGuildSite\bin\PagedList.Mvc.xml

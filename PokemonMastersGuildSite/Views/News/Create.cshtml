@@ -2,9 +2,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/CSS/news.css" rel="stylesheet" type="text/css" />
-<link href="~/CSS/chosen.css" rel="stylesheet" type="text/css" />
+<link href="~/CSS/select2.css" rel="stylesheet" type="text/css" />
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
-@Scripts.Render("~/Scripts/chosen.js");
+@Scripts.Render("~/Scripts/select2.min.js");
 
 
 @{ ViewBag.Title = "News"; }
@@ -33,7 +33,6 @@
                 console.log(result);
                 vm.postText("");
                 vm.postTitle("");
-                tags.val('').trigger('chosen:updated');
                 vm.tags([]);
             },
             error: function (result) {
@@ -41,6 +40,10 @@
                 console.log("bad");
             }
         });
+    }
+
+    function back() {
+        window.location.href = '@Url.Action("Index", "News")';
     }
 </script>
 
@@ -68,6 +71,8 @@
 <div class="newsNewPostWrapper" style="margin-top: 20px;">
     <input value="Submit" type="button" id="Post" style="float: left;"
         onclick="postNews()" />
+    <input value="Back" type="button" id="Back" style="float: right;"
+           onclick="back()" />
 </div>
 
 
@@ -85,6 +90,6 @@
     ko.applyBindings(vm);
 
     $(document).on("ready", function () {
-        $('#koTest').chosen({width: "200px"});
+        $('#koTest').select2({width: "200px"});
     })
 </script>

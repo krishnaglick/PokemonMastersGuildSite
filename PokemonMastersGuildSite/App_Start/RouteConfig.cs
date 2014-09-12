@@ -12,6 +12,7 @@ namespace PokemonMastersGuildSite
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("ViewPlayer.html");
 
             routes.MapRoute(
                 name: "Default",
@@ -27,8 +28,8 @@ namespace PokemonMastersGuildSite
 
             routes.MapRoute(
                 name: "News",
-                url: "{controller}/{action}/{order}/{tags}",
-                defaults: new { controller="News", action = "Index", order = "Desc", tags = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller="News", action = "Index" }
             );
         }
     }

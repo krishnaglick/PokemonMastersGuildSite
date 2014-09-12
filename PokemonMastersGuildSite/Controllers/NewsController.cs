@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using PagedList;
 
 namespace PokemonMastersGuildSite.Controllers
 {
@@ -14,10 +15,10 @@ namespace PokemonMastersGuildSite.Controllers
 
         public ActionResult Index()
         {
-            Models.NewsStory[] posts = nsc.NewsStories.Include(x => x.newsStoryTags).ToArray<Models.NewsStory>();
-            Array.Reverse(posts);
-            ViewBag.posts = posts;
-            ViewBag.stories = posts.Length;
+            Models.NewsStory[] posts = nsc.NewsStories.Include(x => x.newsStoryTags).OrderByDescending(n => n.postDate).ToArray<Models.NewsStory>();
+            int page = HttpContext.Request.QueryString["page"] != null ? Convert.ToInt32(HttpContext.Request.QueryString["page"]) : 1;
+            var pagedPosts = posts.ToPagedList(page, 5);
+            ViewBag.posts = pagedPosts;
             return View();
         }
 
@@ -40,8 +41,9 @@ namespace PokemonMastersGuildSite.Controllers
             {
                 foreach (var tag in tags)
                 {
-                    if (nsc.NewsStoryTags.Find(tag) != null)
-                        newsTags.Add(nsc.NewsStoryTags.Find(tag));
+                    var getTag = nsc.NewsStoryTags.Find(tag);
+                    if (getTag != null)
+                        newsTags.Add(getTag);
                 }
             }
 

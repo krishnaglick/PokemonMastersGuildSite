@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<script type="text/javascript" src="../Scripts/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="../Scripts/Knockout-3.2.0.js"></script>
+<script type="text/javascript" src="../Scripts/guildUtils.js"></script>
+<script type="text/javascript">
+    $.ajax({
+        type: "GET",
+        url: 'http://us.battle.net/api/wow/character/Blackrock/' + GetQueryStringParams("name") + '?fields=items,professions,progression,stats,talents&jsonp=getPlayer', // + ,
+        dataType: "JSONP"
+    });
+
+    function getPlayer(player)
+    {
+        console.log(player);
+        ko.applyBindings({
+                Name: player.name,
+                Pic: "http://us.battle.net/static-render/us/" + player.thumbnail,
+                Class: player.class,
+                Race: player.race,
+                Stats: player.stats,
+                Talents: player.talents,
+                Progression: player.progression.raids[31].bosses,
+                Level: player.level,
+                ilvl: player.items.averageItemLevel,
+                Achives: player.achievementPoints
+            });
+    }
+
+</script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <img data-bind="attr: {src: Pic, alt: Name}" />
+    <img data-bind="attr: {src: getClassIcon(Class), alt: getClass(Class)}" />
+</body>
+</html>

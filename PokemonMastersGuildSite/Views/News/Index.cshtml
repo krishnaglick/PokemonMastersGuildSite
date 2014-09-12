@@ -10,6 +10,18 @@
 <input type="button" id="addNews" value="New Post" onclick="location.href = '@Url.Action("Create")'" />
 
 <div class="newsWrapper">
+    @{
+        var pageNum = ViewBag.posts.PageNumber;
+        if(pageNum > 1)
+        {
+            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber-1)"><</a>;
+        }
+        @ViewBag.posts.PageNumber
+        if (pageNum < ViewBag.posts.PageCount)
+        {
+            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber+1)">></a>;
+        }
+    }
     @foreach(var post in ViewBag.posts)
     {
         <div class="newsItem">

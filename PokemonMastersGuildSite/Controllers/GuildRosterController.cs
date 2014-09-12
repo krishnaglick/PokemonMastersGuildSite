@@ -5,10 +5,8 @@ namespace PokemonMastersGuildSite.Controllers
 {
     public class GuildRosterController : Controller
     {
-        public ActionResult Index(string Name)
+        public ActionResult Index()
         {
-            if (Name != null)
-                ViewBag.chosenMember = Name;
             return View();
         }
     }
