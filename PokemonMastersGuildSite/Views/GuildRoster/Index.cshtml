@@ -29,10 +29,6 @@
             guildMembers: mappedMembers
         });
     }
-
-    function loadModal() {
-        $('#myModal').load(this.href).dialog('open');
-    }
 </script>
 
 <table>
@@ -44,7 +40,7 @@
     </thead>
     <tbody data-bind="foreach: guildMembers">
         <tr>
-            <td><a id="aPlayer" onclick="loadModal()"
+            <td><a id="aPlayer" data-toggle="modal" data-target="#myModal"
                    data-bind="attr: {href: memberUrl}, text: Name"></a></td>
             <td data-bind="text: getRankName(Rank)"></td>
         </tr>
