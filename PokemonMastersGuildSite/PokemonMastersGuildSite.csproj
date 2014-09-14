@@ -264,6 +264,7 @@
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="CSS\guildroster.css" />
     <Content Include="CSS\news.css" />
     <Content Include="CSS\select2.css" />
     <Content Include="favicon.ico" />
@@ -351,7 +352,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Static\ViewPlayer.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
