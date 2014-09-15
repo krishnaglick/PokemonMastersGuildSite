@@ -321,6 +321,7 @@
     </None>
     <Content Include="Content\Site.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Images\loading.gif" />
     <Content Include="Images\monk.bmp" />
     <Content Include="Images\noclass.bmp" />
     <Content Include="Images\warrior.bmp" />
