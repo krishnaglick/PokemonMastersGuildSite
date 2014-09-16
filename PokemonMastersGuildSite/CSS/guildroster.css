@@ -2,3 +2,11 @@
 {
     cursor: pointer;
 }
+.modal
+{
+    overflow-y: auto;
+}
+.tooltiptext
+{
+    display: none;
+}

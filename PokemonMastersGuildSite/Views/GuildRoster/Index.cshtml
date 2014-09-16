@@ -3,7 +3,10 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
+@Scripts.Render("http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.js")
+@Scripts.Render("./GuildRoster.js")
 @Styles.Render("~/CSS/guildroster.css")
+@Styles.Render("http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.css")
 @{
     ViewBag.Title = "Guild Roster";
 }
@@ -23,10 +26,11 @@
         this.Class = player !== undefined ? ko.observable(player.class) : ko.observable();
         this.Race = player !== undefined ? ko.observable(player.race) : ko.observable();
         this.Stats = player !== undefined ? ko.observable(player.stats) : ko.observable();
-        this.Talents = player !== undefined ? ko.observable(player.talents) : ko.observable();
+        this.Spec1 = player !== undefined ? ko.observable(player.talents[0]) : ko.observable();
+        this.Spec2 = player !== undefined ? ko.observable(player.talents[1]) : ko.observable();
         this.Progression = player !== undefined ? ko.observable(player.progression.raids[31].bosses) : ko.observable();
         this.Level = player !== undefined ? ko.observable(player.level) : ko.observable();
-        this.ilvl = player !== undefined ? ko.observable(player.items.averageItemLevel) : ko.observable();
+        this.ilvl = player !== undefined ? ko.observable(player.items.averageItemLevelEquipped) : ko.observable();
         this.Achives = player !== undefined ? ko.observable(player.achievementPoints) : ko.observable();
     }
 
@@ -37,7 +41,7 @@
             $('#loadingModal').modal();
             $.ajax({
                 type: "GET",
-                url: 'http://us.battle.net/api/wow/character/Blackrock/' + player.Name + '?fields=items,ptalentrofessions,progression,stats,s&jsonp=getPlayer',
+                url: 'http://us.battle.net/api/wow/character/Blackrock/' + player.Name + '?fields=items,talents,professions,progression,stats,s&jsonp=getPlayer',
                 dataType: "JSONP"
             });
         }
@@ -62,8 +66,10 @@
     function getPlayer(player) {
         console.log(player);
         vm.Player(new PlayerVM(player));
-        $('#loadingModal').delay(400).modal('hide');
-        $('#myModal').modal();
+        setTimeout(function () {
+            $('#loadingModal').modal('hide');
+            $('#myModal').modal();
+        }, 1000);
     }
 
     $(document).ready(function () {
@@ -71,6 +77,22 @@
             vm.Player(new PlayerVM());
         });
     })
+
+    //No fucking scroll bar, fuck that shit
+    $('#myModal, #loadingModal').bind('show.bs.modal', function () {
+        $("html").css("margin-right", "-15px");
+    });
+
+    //Setup some mother fuckin tooltips
+    $(document).ready(function () {
+        $('.hasTooltip').each(function () {
+            $(this).qtip({
+                content: {
+                    text: $(this).next('div')
+                }
+            });
+        });
+    });
 </script>
 
 <div class="panel panel-default">
@@ -101,6 +123,68 @@
             <div class="modal-body">
                 <img data-bind="attr: {src: Player().Pic, alt: Player().tarPlayer}" />
                 <img data-bind="attr: {src: getClassIcon(Player().Class()), alt: getClass(Player().Class())}" />
+                <div data-bind="text: Player().ilvl() ? 'Average Item Level: ' + Player().ilvl() : ''"></div>
+                <div data-bind="text: Player().Stats() ? 'Dodge: ' + Player().Stats().dodge : ''"></div>
+                <div data-bind="text: Player().Stats() ? 'Parry: ' + Player().Stats().parry : ''"></div>
+                <div data-bind="text: Player().Achives() ? 'Achivement Points: ' + Player().Achives() : ''"></div>
+                
+                <div>
+                    <a class="hasTooltip" href="#">Spec One</a>
+                    <div class="tooltiptext">
+                        <table class="table table-hover table-striped table-border panel-body">
+                            <thead>
+                                <tr>
+                                    <th>Tier</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Player().Spec1() ? Player().Spec1().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
+                                <tr>
+                                    <td data-bind="text: $data.tier + 1"></td>
+                                    <td data-bind="text: $data.spell.name"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <a class="hasTooltip" href="#">Spec Two</a>
+                    <div class="tooltiptext">
+                        <!-- Talents -->
+                        <table class="table table-hover table-striped table-border panel-body">
+                            <thead>
+                                <tr>
+                                    <th>Tier</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Player().Spec2() ? Player().Spec2().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
+                                <tr>
+                                    <td data-bind="text: $data.tier + 1"></td>
+                                    <td data-bind="text: $data.spell.name"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Glyphs -->
+                        <table class="table table-hover table-striped table-border panel-body">
+                            <thead>
+                                <tr>
+                                    <th>Major</th>
+                                    <th>Minor</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Player().Spec2() ? Player().Spec2().glyphs : ''">
+                                <tr>
+                                    <!--Not working-->
+                                    <td data-bind="text: $data.major[$index].name"></td>
+                                    <td data-bind="text: $data.minor[$index].name"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -109,6 +193,18 @@
     </div>
 </div>
 
+<!-- Setting up div's for the talent tooltips -->
+
+
+
+<!-- End divs -->
+
 <div id="loadingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <img src="~/Images/loading.gif" alt="Loading..." />
+    <div class="modal-dialog">
+        <div class="model-content">
+            <div class="modal-body">
+                <img id="img-spinner" src="~/Images/loading.gif" alt="Loading" />
+            </div>
+        </div>
+    </div>
 </div>
