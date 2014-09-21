@@ -68,13 +68,9 @@
             $('#loadingModal').modal('hide');
             $('#myModal').modal();
         }, 1000);
-    }
 
-    $(document).ready(function () {
-        $('#myModal').on('hidden.bs.modal', function () {
-            vm.Player(new PlayerVM());
-        });
-    })
+        vm.Player().activeSpec(vm.Player().Spec()[0]);
+    }
 
     //No fucking scroll bar, fuck that shit
     $('#myModal, #loadingModal').bind('show.bs.modal', function () {
@@ -83,20 +79,23 @@
 
     //Setup some mother fuckin tooltips
     $(document).ready(function () {
+        $('#myModal').on('hidden.bs.modal', function () {
+            vm.Player(new PlayerVM());
+        });
+
         var specData = {
             content: function () { return $('.tooltiptext').html(); },
             html: true,
             trigger: 'hover'
         }
+        $('#spec1, #spec2').popover(specData);
 
         $('#spec1').hover(function () {
             vm.Player().activeSpec(vm.Player().Spec()[0]);
-            $(this).popover(specData);
         });
 
         $('#spec2').hover(function () {
             vm.Player().activeSpec(vm.Player().Spec()[1]);
-            $(this).popover(specData);
         });
 
     });
@@ -136,10 +135,10 @@
                 <div data-bind="text: Player().Achives() ? 'Achivement Points: ' + Player().Achives() : ''"></div>
                 
                 <div>
-                    <a class="hasTooltip" id="spec1" href="#">Spec One</a>
+                    <a data-bind="text: Player().Spec() ? Player().Spec()[0].spec.name : ''" class="hasTooltip" id="spec1" href="#"></a>
                 </div>
                 <div>
-                    <a class="hasTooltip" id="spec2" href="#">Spec Two</a>
+                    <a data-bind="text: Player().Spec() ? Player().Spec()[1].spec.name : ''" class="hasTooltip" id="spec2" href="#"></a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -175,11 +174,10 @@
                 <th>Minor</th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: Player().activeSpec() ? Player().activeSpec().glyphs : ''">
+        <tbody data-bind="foreach: [0, 1, 2]">
             <tr>
-                <!--Not working-->
-                <td data-bind="text: $data.major[$index].name"></td>
-                <td data-bind="text: $data.minor[$index].name"></td>
+                <td data-bind="text: vm.Player().activeSpec() ? vm.Player().activeSpec().glyphs.major[$data].name : ''"></td>
+                <td data-bind="text: vm.Player().activeSpec() ? vm.Player().activeSpec().glyphs.minor[$data].name : ''"></td>
             </tr>
         </tbody>
     </table>

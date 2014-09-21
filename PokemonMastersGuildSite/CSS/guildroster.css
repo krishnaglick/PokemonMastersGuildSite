@@ -10,3 +10,7 @@
 {
     display: none;
 }
+.popover-content
+{
+    font-size: 10px;
+}
