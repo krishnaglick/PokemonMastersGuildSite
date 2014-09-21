@@ -26,8 +26,8 @@
         this.Class = player !== undefined ? ko.observable(player.class) : ko.observable();
         this.Race = player !== undefined ? ko.observable(player.race) : ko.observable();
         this.Stats = player !== undefined ? ko.observable(player.stats) : ko.observable();
-        this.Spec1 = player !== undefined ? ko.observable(player.talents[0]) : ko.observable();
-        this.Spec2 = player !== undefined ? ko.observable(player.talents[1]) : ko.observable();
+        this.Spec = player !== undefined ? ko.observable(player.talents) : ko.observable();
+        this.activeSpec = player !== undefined ? ko.observable(player.talents[0]) : ko.observable();
         this.Progression = player !== undefined ? ko.observable(player.progression.raids[31].bosses) : ko.observable();
         this.Level = player !== undefined ? ko.observable(player.level) : ko.observable();
         this.ilvl = player !== undefined ? ko.observable(player.items.averageItemLevelEquipped) : ko.observable();
@@ -85,13 +85,16 @@
 
     //Setup some mother fuckin tooltips
     $(document).ready(function () {
-        $('.hasTooltip').each(function () {
-            $(this).qtip({
-                content: {
-                    text: $(this).next('div')
-                }
-            });
+        $('.hasTooltip').qtip({ content: $('.tooltiptext') });
+
+        $('#spec1').hover(function () {
+            vm.Player().activeSpec(vm.Player().Spec()[0]);
         });
+
+        $('#spec2').hover(function () {
+            vm.Player().activeSpec(vm.Player().Spec()[1]);
+        });
+
     });
 </script>
 
@@ -129,61 +132,10 @@
                 <div data-bind="text: Player().Achives() ? 'Achivement Points: ' + Player().Achives() : ''"></div>
                 
                 <div>
-                    <a class="hasTooltip" href="#">Spec One</a>
-                    <div class="tooltiptext">
-                        <table class="table table-hover table-striped table-border panel-body">
-                            <thead>
-                                <tr>
-                                    <th>Tier</th>
-                                    <th>Name</th>
-                                </tr>
-                            </thead>
-                            <tbody data-bind="foreach: Player().Spec1() ? Player().Spec1().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
-                                <tr>
-                                    <td data-bind="text: $data.tier + 1"></td>
-                                    <td data-bind="text: $data.spell.name"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <a class="hasTooltip" id="spec1" href="#">Spec One</a>
                 </div>
-
                 <div>
-                    <a class="hasTooltip" href="#">Spec Two</a>
-                    <div class="tooltiptext">
-                        <!-- Talents -->
-                        <table class="table table-hover table-striped table-border panel-body">
-                            <thead>
-                                <tr>
-                                    <th>Tier</th>
-                                    <th>Name</th>
-                                </tr>
-                            </thead>
-                            <tbody data-bind="foreach: Player().Spec2() ? Player().Spec2().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
-                                <tr>
-                                    <td data-bind="text: $data.tier + 1"></td>
-                                    <td data-bind="text: $data.spell.name"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- Glyphs -->
-                        <table class="table table-hover table-striped table-border panel-body">
-                            <thead>
-                                <tr>
-                                    <th>Major</th>
-                                    <th>Minor</th>
-                                </tr>
-                            </thead>
-                            <tbody data-bind="foreach: Player().Spec2() ? Player().Spec2().glyphs : ''">
-                                <tr>
-                                    <!--Not working-->
-                                    <td data-bind="text: $data.major[$index].name"></td>
-                                    <td data-bind="text: $data.minor[$index].name"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <a class="hasTooltip" id="spec2" href="#">Spec Two</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -195,7 +147,39 @@
 
 <!-- Setting up div's for the talent tooltips -->
 
-
+<div class="tooltiptext">
+    <!-- Talents -->
+    <table class="table table-hover table-striped table-border panel-body">
+        <thead>
+            <tr>
+                <th>Tier</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: Player().activeSpec() ? Player().activeSpec().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
+            <tr>
+                <td data-bind="text: $data.tier + 1"></td>
+                <td data-bind="text: $data.spell.name"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Glyphs -->
+    <table class="table table-hover table-striped table-border panel-body">
+        <thead>
+            <tr>
+                <th>Major</th>
+                <th>Minor</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: Player().activeSpec() ? Player().activeSpec().glyphs : ''">
+            <tr>
+                <!--Not working-->
+                <td data-bind="text: $data.major[$index].name"></td>
+                <td data-bind="text: $data.minor[$index].name"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <!-- End divs -->
 
