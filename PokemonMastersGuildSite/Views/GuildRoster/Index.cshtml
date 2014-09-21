@@ -3,10 +3,8 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
-@Scripts.Render("http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.js")
 @Scripts.Render("./GuildRoster.js")
 @Styles.Render("~/CSS/guildroster.css")
-@Styles.Render("http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.css")
 @{
     ViewBag.Title = "Guild Roster";
 }
@@ -85,14 +83,20 @@
 
     //Setup some mother fuckin tooltips
     $(document).ready(function () {
-        $('.hasTooltip').qtip({ content: $('.tooltiptext') });
+        var specData = {
+            content: function () { return $('.tooltiptext').html(); },
+            html: true,
+            trigger: 'hover'
+        }
 
         $('#spec1').hover(function () {
             vm.Player().activeSpec(vm.Player().Spec()[0]);
+            $(this).popover(specData);
         });
 
         $('#spec2').hover(function () {
             vm.Player().activeSpec(vm.Player().Spec()[1]);
+            $(this).popover(specData);
         });
 
     });
