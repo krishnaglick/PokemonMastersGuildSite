@@ -9,5 +9,10 @@ namespace PokemonMastersGuildSite.Controllers
         {
             return View();
         }
+
+        public ViewResult _PlayerDetails()
+        {
+            return View("_PlayerDetails");
+        }
     }
 }

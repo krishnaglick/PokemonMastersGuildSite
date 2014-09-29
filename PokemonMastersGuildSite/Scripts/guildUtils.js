@@ -77,41 +77,39 @@ function getClass(i) {
 function getClassIcon(i) {
     switch(i) {
         case 1:
-            return "/Images/warrior.bmp";
+            return "../Images/warrior.bmp";
         case 2:
-            return "/Images/paladin.bmp";
+            return "../Images/paladin.bmp";
         case 3:
-            return "/Images/hunter.bmp";
+            return "../Images/hunter.bmp";
         case 4:
-            return "/Images/rogue.bmp";
+            return "../Images/rogue.bmp";
         case 5:
-            return "/Images/priest.bmp";
+            return "../Images/priest.bmp";
         case 6:
-            return "/Images/dk.bmp";
+            return "../Images/dk.bmp";
         case 7:
-            return "/Images/shaman.bmp";
+            return "../Images/shaman.bmp";
         case 8:
-            return "/Images/mage.bmp";
+            return "../Images/mage.bmp";
         case 9:
-            return "/Images/warlock.bmp";
+            return "../Images/warlock.bmp";
         case 10:
-            return "/Images/monk.bmp";
+            return "../Images/monk.bmp";
         case 11:
-            return "/Images/druid.bmp";
+            return "../Images/druid.bmp";
         default:
-            return "/Images/noclass.bmp";
+            return "../Images/noclass.bmp";
     }
 }
 
-function GetQueryStringParams(sParam)
-{
+//Url Param Bullshit
+function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
-    {
+    for (var i = 0; i < sURLVariables.length; i++) {
         var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam) 
-        {
+        if (sParameterName[0] == sParam) {
             return sParameterName[1];
         }
     }

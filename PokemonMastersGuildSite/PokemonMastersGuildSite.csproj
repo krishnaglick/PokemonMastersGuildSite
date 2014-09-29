@@ -353,6 +353,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\GuildRoster.js" />
+    <Content Include="Static\PlayerDetails.html" />
+    <Content Include="Scripts\PlayerDetails.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -382,6 +385,7 @@
     <Content Include="Views\GuildRoster\Index.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
+    <Content Include="Views\GuildRoster\_PlayerDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408050124418_Initial.resx">

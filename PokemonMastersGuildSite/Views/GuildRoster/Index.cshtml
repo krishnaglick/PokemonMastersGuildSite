@@ -3,101 +3,22 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
-@Scripts.Render("./GuildRoster.js")
+@Scripts.Render("~/Scripts/GuildRoster.js")
 @Styles.Render("~/CSS/guildroster.css")
+
 @{
     ViewBag.Title = "Guild Roster";
 }
 
 <script type="text/javascript">
-    $.ajax({
-        type: "GET",
-        url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members&jsonp=bindMembers',
-        dataType: "JSONP"
+    //Document Ready
+    $(function () {
+        loadPlayers();
     });
-
-    var vm;
-
-    function PlayerVM(player) {
-        this.tarPlayer = player !== undefined ? ko.observable(player.name) : ko.observable();
-        this.Pic = player !== undefined ? ko.observable("http://us.battle.net/static-render/us/" + player.thumbnail) : ko.observable();
-        this.Class = player !== undefined ? ko.observable(player.class) : ko.observable();
-        this.Race = player !== undefined ? ko.observable(player.race) : ko.observable();
-        this.Stats = player !== undefined ? ko.observable(player.stats) : ko.observable();
-        this.Spec = player !== undefined ? ko.observable(player.talents) : ko.observable();
-        this.activeSpec = player !== undefined ? ko.observable(player.talents[0]) : ko.observable();
-        this.Progression = player !== undefined ? ko.observable(player.progression.raids[31].bosses) : ko.observable();
-        this.Level = player !== undefined ? ko.observable(player.level) : ko.observable();
-        this.ilvl = player !== undefined ? ko.observable(player.items.averageItemLevelEquipped) : ko.observable();
-        this.Achives = player !== undefined ? ko.observable(player.achievementPoints) : ko.observable();
-    }
-
-    function viewModel(mappedMembers) {
-        this.guildMembers = mappedMembers;
-
-        this.bindPlayer = function (player) {
-            $('#loadingModal').modal();
-            $.ajax({
-                type: "GET",
-                url: 'http://us.battle.net/api/wow/character/Blackrock/' + player.Name + '?fields=items,talents,professions,progression,stats,s&jsonp=getPlayer',
-                dataType: "JSONP"
-            });
-        }
-
-        this.Player = ko.observable(new PlayerVM());
-    }
-
-    function bindMembers(data) {
-        var mappedMembers = $.map(data.members, function (member) {
-            return {
-                Name: member.character.name,
-                Rank: member.rank
-            };
-        }).sort(function (a, b) {
-            return a.Rank - b.Rank;
-        });
-
-        vm = new viewModel(mappedMembers);
-        ko.applyBindings(vm);
-    }
-
-    function getPlayer(player) {
-        console.log(player);
-        vm.Player(new PlayerVM(player));
-        setTimeout(function () {
-            $('#loadingModal').modal('hide');
-            $('#myModal').modal();
-        }, 1000);
-
-        vm.Player().activeSpec(vm.Player().Spec()[0]);
-    }
 
     //No fucking scroll bar, fuck that shit
     $('#myModal, #loadingModal').bind('show.bs.modal', function () {
         $("html").css("margin-right", "-15px");
-    });
-
-    //Setup some mother fuckin tooltips
-    $(document).ready(function () {
-        $('#myModal').on('hidden.bs.modal', function () {
-            vm.Player(new PlayerVM());
-        });
-
-        var specData = {
-            content: function () { return $('.tooltiptext').html(); },
-            html: true,
-            trigger: 'hover'
-        }
-        $('#spec1, #spec2').popover(specData);
-
-        $('#spec1').hover(function () {
-            vm.Player().activeSpec(vm.Player().Spec()[0]);
-        });
-
-        $('#spec2').hover(function () {
-            vm.Player().activeSpec(vm.Player().Spec()[1]);
-        });
-
     });
 </script>
 
@@ -110,36 +31,23 @@
                     <th>Rank</th>
                 </tr>
             </thead>
-            <tbody data-bind="foreach: guildMembers">
+            <tbody data-bind="foreach: vm.playerList()">
                 <tr>
-                    <td><a href="#" data-target="#myModal"  data-bind="click: $parent.bindPlayer, text: Name"></a></td>
+                    <td><a href="#" data-bind="click: $parent.loadPlayer, text: Name"></a></td>
                     <td data-bind="text: getRankName(Rank)"></td>
                 </tr>
             </tbody>
         </table>
 </div>
 
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="showPlayer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="model-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
-                <h3 id="myModalLabel" data-bind="text: Player().tarPlayer"></h3>
             </div>
             <div class="modal-body">
-                <img data-bind="attr: {src: Player().Pic, alt: Player().tarPlayer}" />
-                <img data-bind="attr: {src: getClassIcon(Player().Class()), alt: getClass(Player().Class())}" />
-                <div data-bind="text: Player().ilvl() ? 'Average Item Level: ' + Player().ilvl() : ''"></div>
-                <div data-bind="text: Player().Stats() ? 'Dodge: ' + Player().Stats().dodge : ''"></div>
-                <div data-bind="text: Player().Stats() ? 'Parry: ' + Player().Stats().parry : ''"></div>
-                <div data-bind="text: Player().Achives() ? 'Achivement Points: ' + Player().Achives() : ''"></div>
-                
-                <div>
-                    <a data-bind="text: Player().Spec() ? Player().Spec()[0].spec.name : ''" class="hasTooltip" id="spec1" href="#"></a>
-                </div>
-                <div>
-                    <a data-bind="text: Player().Spec() ? Player().Spec()[1].spec.name : ''" class="hasTooltip" id="spec2" href="#"></a>
-                </div>
+                <div class="modal-content"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -148,42 +56,6 @@
     </div>
 </div>
 
-<!-- Setting up div's for the talent tooltips -->
-
-<div class="tooltiptext">
-    <!-- Talents -->
-    <table class="table table-hover table-striped table-border panel-body">
-        <thead>
-            <tr>
-                <th>Tier</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: Player().activeSpec() ? Player().activeSpec().talents.sort(function(a,b) {return a.tier - b.tier}) : ''">
-            <tr>
-                <td data-bind="text: $data.tier + 1"></td>
-                <td data-bind="text: $data.spell.name"></td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- Glyphs -->
-    <table class="table table-hover table-striped table-border panel-body">
-        <thead>
-            <tr>
-                <th>Major</th>
-                <th>Minor</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: [0, 1, 2]">
-            <tr>
-                <td data-bind="text: vm.Player().activeSpec() ? vm.Player().activeSpec().glyphs.major[$data].name : ''"></td>
-                <td data-bind="text: vm.Player().activeSpec() ? vm.Player().activeSpec().glyphs.minor[$data].name : ''"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- End divs -->
 
 <div id="loadingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
