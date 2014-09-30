@@ -21,14 +21,11 @@ function bindMembers(data) {
             return a.Rank - b.Rank;
         })),
         loadPlayer: function () {
-            $('#loadingModal').modal();
-            setTimeout(function () {
-                $('#loadingModal').modal('hide');
-                $('#showPlayer').modal({
-                    remote: '/Static/PlayerDetails.html?player=' + this.Name,
-                    show: true
-                });
-            }, 1000);
+            $('#showPlayer').modal();/*{
+                remote: '/Static/PlayerDetails.html?player=' + this.Name,
+                show: true
+            });*/
+            $('.modal-body').load('/Static/PlayerDetails.html?player=' + this.Name);
         }
     }
     ko.applyBindings(vm);
