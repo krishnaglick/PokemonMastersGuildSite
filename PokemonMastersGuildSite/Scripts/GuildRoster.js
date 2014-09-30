@@ -21,14 +21,15 @@ function bindMembers(data) {
             return a.Rank - b.Rank;
         })),
         loadPlayer: function () {
-            $('#showPlayer').modal();/*{
-                remote: '/Static/PlayerDetails.html?player=' + this.Name,
-                show: true
-            });*/
-            $('.modal-body').load('/Static/PlayerDetails.html?player=' + this.Name);
+            //Not sure if this is the best order but it works, so fuck it, not changing!
+            $('.modal-body').load('/Static/PlayerDetails.html');
+            loadPlayer(this.Name);
+            $('#showPlayer').modal();
+            setTimeout(function () { activateTooltips(); }, 1250);
+
         }
     }
-    ko.applyBindings(vm);
+    ko.applyBindings(vm, $('.playerList')[0]);
 }
 
 $('#showPlayer').on('hidden', function () {

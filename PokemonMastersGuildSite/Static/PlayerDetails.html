@@ -1,72 +1,55 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-    <script src="../Scripts/jquery-2.1.0.min.js" type="text/javascript"></script>
-    <script src="../Scripts/Knockout-3.2.0.js" type="text/javascript"></script>
-    <script src="../Scripts/bootstrap.min.js" type="text/javascript"></script>
-    <!--<script src="../Scripts/modernizr-2.7.1.js" type="text/javascript"></script>-->
-    <script src="../Scripts/guildUtils.js" type="text/javascript"></script>
-    <script src="../Scripts/PlayerDetails.js" type="text/javascript"></script>
+﻿
+<!-- Player Stats -->
+<h3 data-bind="text: tarPlayer.Name() + ' - Level ' + tarPlayer.Level() + ' ' + getRace(tarPlayer.Race()) + ' ' + getClass(tarPlayer.Class())"></h3>
+<h4 data-bind="text: tarPlayer.Professions().primary[0].name + '/' + tarPlayer.Professions().primary[1].name"></h4>
+<img data-bind="attr: {src: tarPlayer.Pic(), alt: tarPlayer.Name()}" />
+<img data-bind="attr: {src: getClassIcon(tarPlayer.Class()), alt: getClass(tarPlayer.Class())}" />
+<div data-bind="text: 'Average Item Level: ' + tarPlayer.ilvl()"></div>
+<div data-bind="html: tarPlayer.Stats()"></div>
+<div data-bind="text: 'Achivement Points: ' + tarPlayer.Achives()"></div>
 
-    <link href="../CSS/guildroster.css" type="text/css" rel="stylesheet" />
+<div>
+    <a data-bind="text: tarPlayer.Spec()[0].spec.name" class="hasTooltip" id="spec1" href="#"></a>
+</div>
+<div>
+    <a data-bind="text: tarPlayer.Spec()[1].spec.name" class="hasTooltip" id="spec2" href="#"></a>
+</div>
 
-    <script type="text/javascript">
-        $(function () {
-            loadPlayer();
-        })
-    </script>
-</head>
-<body>
-    <!-- Player Stats Page -->
-    <h3 id="myModalLabel" data-bind="text: tarPlayer.Name()"></h3>
-    <img data-bind="attr: {src: tarPlayer.Pic(), alt: tarPlayer.Name()}" />
-    <img data-bind="attr: {src: getClassIcon(tarPlayer.Class()), alt: getClass(tarPlayer.Class())}" />
-    <div data-bind="text: 'Average Item Level: ' + tarPlayer.ilvl()"></div>
-    <div data-bind="html: tarPlayer.Stats()"></div>
-    <div data-bind="text: 'Achivement Points: ' + tarPlayer.Achives()"></div>
+<div data-bind="html: tarPlayer.Progression()"></div>
 
-    <div>
-        <a data-bind="text: tarPlayer.Spec() ? tarPlayer.Spec()[0].spec.name : ''" class="hasTooltip" id="spec1" href="#"></a>
-    </div>
-    <div>
-        <a data-bind="text: tarPlayer.Spec() ? tarPlayer.Spec()[1].spec.name : ''" class="hasTooltip" id="spec2" href="#"></a>
-    </div>
-    <!-- End Stats Page -->
+<!-- End Stats -->
 
-    <!-- Setting up talent tooltip -->
-    <div class="tooltiptext">
-        <!-- Talents -->
-        <table class="table table-hover table-striped table-border panel-body">
-            <thead>
-                <tr>
-                    <th>Tier</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: tarPlayer.HoverSpec().talents.sort(function(a,b) {return a.tier - b.tier})">
-                <tr>
-                    <td data-bind="text: $data.tier + 1"></td>
-                    <td data-bind="text: $data.spell.name"></td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- Glyphs -->
-        <table class="table table-hover table-striped table-border panel-body">
-            <thead>
-                <tr>
-                    <th>Major</th>
-                    <th>Minor</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: [0, 1, 2]">
-                <tr>
-                    <td data-bind="text: tarPlayer.HoverSpec().glyphs.major[$data] ? tarPlayer.HoverSpec().glyphs.major[$data].name : ''"></td>
-                    <td data-bind="text: tarPlayer.HoverSpec().glyphs.minor[$data] ? tarPlayer.HoverSpec().glyphs.minor[$data].name : ''"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- End Tooltip -->
-</body>
-</html>
+<!-- Talent Tooltip -->
+<div class="tooltiptext">
+    <!-- Talents -->
+    <table class="table table-hover table-striped table-border panel-body">
+        <thead>
+            <tr>
+                <th>Tier</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: tarPlayer.HoverSpec().talents.sort(function(a,b) {return a.tier - b.tier})">
+            <tr>
+                <td data-bind="text: $data.tier + 1"></td>
+                <td data-bind="text: $data.spell.name"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Glyphs -->
+    <table class="table table-hover table-striped table-border panel-body">
+        <thead>
+            <tr>
+                <th>Major</th>
+                <th>Minor</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: [0, 1, 2]">
+            <tr>
+                <td data-bind="text: tarPlayer.HoverSpec().glyphs.major[$data] ? tarPlayer.HoverSpec().glyphs.major[$data].name : ''"></td>
+                <td data-bind="text: tarPlayer.HoverSpec().glyphs.minor[$data] ? tarPlayer.HoverSpec().glyphs.minor[$data].name : ''"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- End Tooltip -->

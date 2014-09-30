@@ -4,6 +4,7 @@
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
 @Scripts.Render("~/Scripts/GuildRoster.js")
+@Scripts.Render("~/Scripts/PlayerDetails.js")
 @Styles.Render("~/CSS/guildroster.css")
 
 @{
@@ -17,14 +18,14 @@
     });
 
     //No fucking scroll bar, fuck that shit
-    $('#myModal, #loadingModal').bind('show.bs.modal', function () {
+    $('#showPlayer').bind('show.bs.modal', function () {
         $("html").css("margin-right", "-15px");
     });
 </script>
 
 <div class="panel panel-default">
     <div class="panel-heading"><h3 class="panel-title">Guild Roster</h3></div>
-        <table class="table table-hover table-striped table-border panel-body">
+        <table class="table table-hover table-striped table-border panel-body playerList">
             <thead>
                 <tr>
                     <th>Character Name</th>
@@ -47,20 +48,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
             </div>
             <div class="modal-body">
+                <!--Javascript injects the player stats page into here-->
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="loadingModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="model-content">
-            <div class="modal-body">
-                <img id="img-spinner" src="~/Images/loading.gif" alt="Loading" />
             </div>
         </div>
     </div>
