@@ -1,28 +1,60 @@
-﻿//The view model for the list of guild members
-var vm;
-
-$(function () {
+﻿$(function () {
     var guild_roster_view_model = new GuildRosterModel();
-    ko.applyBindings(guild_roster_view_model, $('.playerList')[0]);
+    ko.applyBindings(guild_roster_view_model);
     guild_roster_view_model.getMembers();
 
-    var specData = {
-        content: function () { return $('.tooltiptext').html(); },
-        html: true,
-        trigger: 'hover'
-    }
-
-    $('#spec1, #spec2').popover(specData);
-
-    $('#spec1').hover(function () {
-        tarPlayer.HoverSpec(tarPlayer.Spec()[0]);
+    $('#showPlayer').on('hidden', function () {
+        $(this).data('modal', null);
     });
 
-    $('#spec2').hover(function () {
-        tarPlayer.HoverSpec(tarPlayer.Spec()[1]);
+    $('#showPlayer').bind('show.bs.modal', function () {
+        $("html").css("margin-right", "-15px");
     });
-})
-
-$('#showPlayer').on('hidden', function () {
-    $(this).data('modal', null);
 });
+
+function getStats(returnedPlayer) {
+    //Calculate what stats to show per role
+    var Role = typeof returnedPlayer.talents[0].selected === 'undefined' ? returnedPlayer.talents[1].spec.role : returnedPlayer.talents[0].spec.role;
+    var PrimaryStats = "";
+    //For laziness
+    var atrs = returnedPlayer.stats;
+    switch (Role) {
+        case "DPS":
+            if (atrs.agi > atrs.str) { PrimaryStats = "<div class='stat'>Agility: " + atrs.agi + "</div>"; }
+            else { PrimaryStats = "<div class='stat'>Strength: " + atrs.str + "</div>"; }
+            break;
+        case "TANK":
+            PrimaryStats = "<div class='stat'>Health: " + atrs.health + "</div>" +
+                           "<div class='stat'>Dodge: " + parseFloat(Math.round(atrs.dodge * 100) / 100).toFixed(2) + "%</div>" +
+                           "<div class='stat'>Parry: " + parseFloat(Math.round(atrs.parry * 100) / 100).toFixed(2) + "%</div>";
+            break;
+        case "HEALING":
+            PrimaryStats = "<div class='stat'>Intellect: " + atrs.int + "</div>" +
+                           "<div class='stat'>Spirit: " + atrs.spr + "</div>" +
+                           "<div class='stat'>Spell Power: " + atrs.spellPower + "</div>";
+            break;
+        default:
+            return "Bad Player!";
+    }
+    PrimaryStats += "<div class='stat'>Haste: " + parseFloat(Math.round(atrs.haste * 100) / 100).toFixed(2) + "%</div>" +
+                    "<div class='stat'>Crit: " + parseFloat(Math.round(atrs.crit * 100) / 100).toFixed(2) + "%</div>" +
+                    "<div class='stat'>Mastery: " + parseFloat(Math.round(atrs.mastery * 100) / 100).toFixed(2) + "%</div>";
+    return PrimaryStats;
+}
+
+function getProgression(returnedPlayer) {
+    //Figure out what to show for progression!
+    var prog = returnedPlayer.progression.raids[31].bosses;
+    var nKill = 0;
+    var hKill = 0;
+    $.each(prog, function (i, val) {
+        nKill = val.normalKills > 0 ? nKill + 1 : nKill;
+        hKill = val.heroicKills > 0 ? hKill + 1 : hKill;
+    });
+    kills = "";
+    if (nKill > 0)
+        kills += "<div class='progression'>" + nKill + "/14 Normal</div>"
+    if (hKill > 0)
+        kills += "<div class='progression'>" + hKill + "/14 Heroic</div>"
+    return kills;
+}

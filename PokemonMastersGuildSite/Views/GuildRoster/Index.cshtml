@@ -3,40 +3,35 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
+@Scripts.Render("~/Scripts/opentip.min.js")
 @Scripts.Render("~/ViewModels/GuildRosterModel.js")
 @Scripts.Render("~/Scripts/GuildRoster.js")
 @Styles.Render("~/CSS/guildroster.css")
+@Styles.Render("~/CSS/opentip.css")
 
 @{
     ViewBag.Title = "Guild Roster";
 }
 
-<script type="text/javascript">
-    //No fucking scroll bar, fuck that shit
-    $('#showPlayer').bind('show.bs.modal', function () {
-        $("html").css("margin-right", "-15px");
-    });
-</script>
-
 <div class="panel panel-default">
     <div class="panel-heading"><h3 class="panel-title">Guild Roster</h3></div>
-        <table class="table table-hover table-striped table-border panel-body playerList">
-            <thead>
-                <tr>
-                    <th>Character Name</th>
-                    <th>Rank</th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: player_list">
-                <tr>
-                    <td><a href="#" data-bind="click: $parent.getPlayer, text: Name"></a></td>
-                    <td data-bind="text: getRankName(Rank)"></td>
-                </tr>
-            </tbody>
-        </table>
+    <table class="table table-hover table-striped table-border panel-body playerList">
+        <thead>
+            <tr>
+                <th>Character Name</th>
+                <th>Rank</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: player_list">
+            <tr>
+                <td><a href="#" data-bind="click: $parent.getPlayer.bind($parent), text: Name"></a></td>
+                <td data-bind="text: getRankName(Rank)"></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<div id="showPlayer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="showPlayer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-bind="with: player">
     <div class="modal-dialog">
         <div class="model-content">
             <div class="modal-header">
@@ -44,22 +39,26 @@
             </div>
             <div class="modal-body">
                 <!-- Player Stats -->
-                <h3 data-bind="text: player.Name() + ' - Level ' + player.Level() + ' ' + getRace(player.Race()) + ' ' + getClass(player.Class())"></h3>
-                <h4 data-bind="text: player.Professions().primary[0].name + '/' + player.Professions().primary[1].name"></h4>
-                <img data-bind="attr: {src: player.Pic(), alt: player.Name()}" />
-                <img data-bind="attr: {src: getClassIcon(player.Class()), alt: getClass(player.Class())}" />
-                <div data-bind="text: 'Average Item Level: ' + player.ilvl()"></div>
-                <div data-bind="html: player.Stats()"></div>
-                <div data-bind="text: 'Achivement Points: ' + player.Achives()"></div>
+                <h3 data-bind="text: Name + ' - Level ' + Level + ' ' + getRace(Race) + ' ' + getClass(Class)"></h3>
+                <h4 data-bind="text: Professions.primary[0].name + '/' + Professions.primary[1].name"></h4>
+                <img data-bind="attr: {src: Pic, alt: Name}" />
+                <img data-bind="attr: {src: getClassIcon(Class), alt: getClass(Class)}" />
+                <div data-bind="text: 'Average Item Level: ' + ilvl"></div>
+                <div data-bind="html: Stats"></div>
+                <div data-bind="text: 'Achivement Points: ' +Achives"></div>
 
                 <div>
-                    <a data-bind="text: player.Spec()[0].spec.name" class="hasTooltip" id="spec1" href="#"></a>
+                    <a data-bind="text: Spec[0].spec.name, event: {mouseover: $parent.setSpec(0)}"
+                       data-ot="$('.tooltiptext').html()" data-ot-delay="1" data-ot-hide-trigger="closeButton"
+                       class="hasTooltip" id="spec1" href="#"></a>
                 </div>
                 <div>
-                    <a data-bind="text: player.Spec()[1].spec.name" class="hasTooltip" id="spec2" href="#"></a>
+                    <a data-bind="text: Spec[1].spec.name, event: {mouseover: $parent.setSpec(1)}"
+                       data-ot="$('.tooltiptext').html()" data-ot-delay="1" data-ot-hide-trigger="closeButton"
+                       class="hasTooltip" id="spec2" href="#"></a>
                 </div>
 
-                <div data-bind="html: player.Progression()"></div>
+                <div data-bind="html: Progression"></div>
 
                 <!-- End Stats -->
                 <!-- Talent Tooltip -->
@@ -72,7 +71,7 @@
                                 <th>Name</th>
                             </tr>
                         </thead>
-                        <tbody data-bind="foreach: player.HoverSpec().talents.sort(function(a,b) {return a.tier - b.tier})">
+                        <tbody data-bind="foreach: HoverSpec.talents.sort(function(a,b) {return a.tier - b.tier})">
                             <tr>
                                 <td data-bind="text: $data.tier + 1"></td>
                                 <td data-bind="text: $data.spell.name"></td>
@@ -89,8 +88,8 @@
                         </thead>
                         <tbody data-bind="foreach: [0, 1, 2]">
                             <tr>
-                                <td data-bind="text: player.HoverSpec().glyphs.major[$data] ? player.HoverSpec().glyphs.major[$data].name : ''"></td>
-                                <td data-bind="text: player.HoverSpec().glyphs.minor[$data] ? player.HoverSpec().glyphs.minor[$data].name : ''"></td>
+                                <td data-bind="text: $parent.HoverSpec.glyphs.major[$data] ? $parent.HoverSpec.glyphs.major[$data].name : ''"></td>
+                                <td data-bind="text: $parent.HoverSpec.glyphs.minor[$data] ? $parent.HoverSpec.glyphs.minor[$data].name : ''"></td>
                             </tr>
                         </tbody>
                     </table>
