@@ -1,36 +1,27 @@
 ﻿//The view model for the list of guild members
 var vm;
 
-function loadPlayers() {
-    $.ajax({
-        type: "GET",
-        url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members&jsonp=bindMembers',
-        dataType: "JSONP"
-    });
-}
+$(function () {
+    var guild_roster_view_model = new GuildRosterModel();
+    ko.applyBindings(guild_roster_view_model, $('.playerList')[0]);
+    guild_roster_view_model.getMembers();
 
-//Get guild members, sift out member name plus rank
-function bindMembers(data) {
-    vm = {
-        playerList: ko.observable($.map(data.members, function (member) {
-            return {
-                Name: member.character.name,
-                Rank: member.rank
-            };
-        }).sort(function (a, b) {
-            return a.Rank - b.Rank;
-        })),
-        loadPlayer: function () {
-            //Not sure if this is the best order but it works, so fuck it, not changing!
-            $('.modal-body').load('/Static/PlayerDetails.html');
-            loadPlayer(this.Name);
-            $('#showPlayer').modal();
-            setTimeout(function () { activateTooltips(); }, 1250);
-
-        }
+    var specData = {
+        content: function () { return $('.tooltiptext').html(); },
+        html: true,
+        trigger: 'hover'
     }
-    ko.applyBindings(vm, $('.playerList')[0]);
-}
+
+    $('#spec1, #spec2').popover(specData);
+
+    $('#spec1').hover(function () {
+        tarPlayer.HoverSpec(tarPlayer.Spec()[0]);
+    });
+
+    $('#spec2').hover(function () {
+        tarPlayer.HoverSpec(tarPlayer.Spec()[1]);
+    });
+})
 
 $('#showPlayer').on('hidden', function () {
     $(this).data('modal', null);

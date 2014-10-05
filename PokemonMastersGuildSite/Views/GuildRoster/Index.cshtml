@@ -3,8 +3,8 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
+@Scripts.Render("~/ViewModels/GuildRosterModel.js")
 @Scripts.Render("~/Scripts/GuildRoster.js")
-@Scripts.Render("~/Scripts/PlayerDetails.js")
 @Styles.Render("~/CSS/guildroster.css")
 
 @{
@@ -12,11 +12,6 @@
 }
 
 <script type="text/javascript">
-    //Document Ready
-    $(function () {
-        loadPlayers();
-    });
-
     //No fucking scroll bar, fuck that shit
     $('#showPlayer').bind('show.bs.modal', function () {
         $("html").css("margin-right", "-15px");
@@ -32,9 +27,9 @@
                     <th>Rank</th>
                 </tr>
             </thead>
-            <tbody data-bind="foreach: vm.playerList()">
+            <tbody data-bind="foreach: player_list">
                 <tr>
-                    <td><a href="#" data-bind="click: $parent.loadPlayer, text: Name"></a></td>
+                    <td><a href="#" data-bind="click: $parent.getPlayer, text: Name"></a></td>
                     <td data-bind="text: getRankName(Rank)"></td>
                 </tr>
             </tbody>
@@ -48,7 +43,60 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> × </button>
             </div>
             <div class="modal-body">
-                <!--Javascript injects the player stats page into here-->
+                <!-- Player Stats -->
+                <h3 data-bind="text: player.Name() + ' - Level ' + player.Level() + ' ' + getRace(player.Race()) + ' ' + getClass(player.Class())"></h3>
+                <h4 data-bind="text: player.Professions().primary[0].name + '/' + player.Professions().primary[1].name"></h4>
+                <img data-bind="attr: {src: player.Pic(), alt: player.Name()}" />
+                <img data-bind="attr: {src: getClassIcon(player.Class()), alt: getClass(player.Class())}" />
+                <div data-bind="text: 'Average Item Level: ' + player.ilvl()"></div>
+                <div data-bind="html: player.Stats()"></div>
+                <div data-bind="text: 'Achivement Points: ' + player.Achives()"></div>
+
+                <div>
+                    <a data-bind="text: player.Spec()[0].spec.name" class="hasTooltip" id="spec1" href="#"></a>
+                </div>
+                <div>
+                    <a data-bind="text: player.Spec()[1].spec.name" class="hasTooltip" id="spec2" href="#"></a>
+                </div>
+
+                <div data-bind="html: player.Progression()"></div>
+
+                <!-- End Stats -->
+                <!-- Talent Tooltip -->
+                <div class="tooltiptext">
+                    <!-- Talents -->
+                    <table class="table table-hover table-striped table-border panel-body">
+                        <thead>
+                            <tr>
+                                <th>Tier</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: player.HoverSpec().talents.sort(function(a,b) {return a.tier - b.tier})">
+                            <tr>
+                                <td data-bind="text: $data.tier + 1"></td>
+                                <td data-bind="text: $data.spell.name"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Glyphs -->
+                    <table class="table table-hover table-striped table-border panel-body">
+                        <thead>
+                            <tr>
+                                <th>Major</th>
+                                <th>Minor</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: [0, 1, 2]">
+                            <tr>
+                                <td data-bind="text: player.HoverSpec().glyphs.major[$data] ? player.HoverSpec().glyphs.major[$data].name : ''"></td>
+                                <td data-bind="text: player.HoverSpec().glyphs.minor[$data] ? player.HoverSpec().glyphs.minor[$data].name : ''"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End Tooltip -->
+
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

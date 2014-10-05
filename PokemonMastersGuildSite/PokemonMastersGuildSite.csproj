@@ -356,6 +356,7 @@
     <Content Include="Scripts\GuildRoster.js" />
     <Content Include="Static\PlayerDetails.html" />
     <Content Include="Scripts\PlayerDetails.js" />
+    <Content Include="ViewModels\GuildRosterModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
