@@ -37,9 +37,10 @@ GuildRosterModel.prototype.getPlayer = function (player) {
             Pic: "http://us.battle.net/static-render/us/" + returnedPlayer.thumbnail,
             Class: returnedPlayer.class,
             Race: returnedPlayer.race,
-            Stats: getStats(returnedPlayer),
+            PrimaryStats: getPrimaryStats(returnedPlayer),
+            SecondaryStats: getSecondaryStats(returnedPlayer),
             Spec: returnedPlayer.talents,
-            HoverSpec: returnedPlayer.talents[0],
+            HoverSpec: ko.observable(returnedPlayer.talents[0]),
             Progression: getProgression(returnedPlayer),
             Level: returnedPlayer.level,
             ilvl: returnedPlayer.items.averageItemLevelEquipped,
@@ -52,5 +53,13 @@ GuildRosterModel.prototype.getPlayer = function (player) {
 }
 
 GuildRosterModel.prototype.setSpec = function (spec) {
-    this.player().HoverSpec = this.player().Spec[spec];
+    this.player().HoverSpec(this.player().Spec[spec]);
+    if (spec == 0) {
+        $('.mainSpec').addClass('specActive');
+        $('.offSpec').removeClass('specActive');
+    }
+    else {
+        $('.mainSpec').removeClass('specActive');
+        $('.offSpec').addClass('specActive');
+    }
 }

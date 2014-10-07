@@ -3,11 +3,9 @@
 }
 @Scripts.Render("~/Scripts/Knockout-3.2.0.js")
 @Scripts.Render("~/Scripts/guildUtils.js")
-@Scripts.Render("~/Scripts/opentip.min.js")
 @Scripts.Render("~/ViewModels/GuildRosterModel.js")
 @Scripts.Render("~/Scripts/GuildRoster.js")
 @Styles.Render("~/CSS/guildroster.css")
-@Styles.Render("~/CSS/opentip.css")
 
 @{
     ViewBag.Title = "Guild Roster";
@@ -39,63 +37,63 @@
             </div>
             <div class="modal-body">
                 <!-- Player Stats -->
-                <h3 data-bind="text: Name + ' - Level ' + Level + ' ' + getRace(Race) + ' ' + getClass(Class)"></h3>
-                <h4 data-bind="text: Professions.primary[0].name + '/' + Professions.primary[1].name"></h4>
-                <img data-bind="attr: {src: Pic, alt: Name}" />
-                <img data-bind="attr: {src: getClassIcon(Class), alt: getClass(Class)}" />
-                <div data-bind="text: 'Average Item Level: ' + ilvl"></div>
-                <div data-bind="html: Stats"></div>
-                <div data-bind="text: 'Achivement Points: ' +Achives"></div>
+                <div class="container-fluid center">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <img class="playerImg" data-bind="attr: {src: getClassIcon(Class), alt: getClass(Class)}" />
+                        </div>
+                        <div class="col-xs-4">
+                            <div data-bind="text: Name + ' - Level ' + Level"></div>
+                            <div data-bind="text: getRace(Race) + ' ' + getClass(Class)"></div>
+                            <div data-bind="text: Professions.primary[0].name + '/' + Professions.primary[1].name"></div>
+                        </div>
+                        <div class="col-xs-4">
+                            <img class="playerImg" data-bind="attr: {src: Pic, alt: Name}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div data-bind="html: PrimaryStats"></div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div data-bind="html: SecondaryStats"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div data-bind="text: 'Average Item Level: ' + ilvl"></div>
+                            <div data-bind="text: 'Achivement Points: ' + Achives"></div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div data-bind="html: Progression"></div>
+                        </div>
+                    </div>
 
-                <div>
-                    <a data-bind="text: Spec[0].spec.name, event: {mouseover: $parent.setSpec(0)}"
-                       data-ot="$('.tooltiptext').html()" data-ot-delay="1" data-ot-hide-trigger="closeButton"
-                       class="hasTooltip" id="spec1" href="#"></a>
+                    <div class="row">
+                        <div class="col-xs-6 clickable mainSpec specActive" data-bind="text: Spec[0].spec.name, event: {click: $parent.setSpec(0)}"></div>
+                        <div class="col-xs-6 clickable offSpec" data-bind="text: Spec[1].spec.name, event: {click: $parent.setSpec(1)}"></div>
+                    </div>
+
+                    <!-- Talents & Glyphs -->
+                    <div class="talents row">
+                        <div class="col-xs-6">Tier</div>
+                        <div class="col-xs-6">Name</div>
+                        <div data-bind="foreach: HoverSpec().talents.sort(function(a,b) {return a.tier - b.tier})">
+                            <div class="col-xs-6" data-bind="text: $data.tier + 1"></div>
+                            <div class="col-xs-6" data-bind="text: $data.spell.name"></div>
+                        </div>
+                    </div>
+                    <div class="talents row">
+                        <div class="col-xs-6">Major</div>
+                        <div class="col-xs-6">Minor</div>
+                        <div data-bind="foreach: [0, 1, 2]">
+                            <div class="col-xs-6" data-bind="text: $parent.HoverSpec().glyphs.major[$data] ? $parent.HoverSpec().glyphs.major[$data].name : ''"></div>
+                            <div class="col-xs-6" data-bind="text: $parent.HoverSpec().glyphs.minor[$data] ? $parent.HoverSpec().glyphs.minor[$data].name : ''"></div>
+                        </div>
+                    </div>
+                    <!-- End Talents & Glyphs -->
                 </div>
-                <div>
-                    <a data-bind="text: Spec[1].spec.name, event: {mouseover: $parent.setSpec(1)}"
-                       data-ot="$('.tooltiptext').html()" data-ot-delay="1" data-ot-hide-trigger="closeButton"
-                       class="hasTooltip" id="spec2" href="#"></a>
-                </div>
-
-                <div data-bind="html: Progression"></div>
-
                 <!-- End Stats -->
-                <!-- Talent Tooltip -->
-                <div class="tooltiptext">
-                    <!-- Talents -->
-                    <table class="table table-hover table-striped table-border panel-body">
-                        <thead>
-                            <tr>
-                                <th>Tier</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach: HoverSpec.talents.sort(function(a,b) {return a.tier - b.tier})">
-                            <tr>
-                                <td data-bind="text: $data.tier + 1"></td>
-                                <td data-bind="text: $data.spell.name"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- Glyphs -->
-                    <table class="table table-hover table-striped table-border panel-body">
-                        <thead>
-                            <tr>
-                                <th>Major</th>
-                                <th>Minor</th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach: [0, 1, 2]">
-                            <tr>
-                                <td data-bind="text: $parent.HoverSpec.glyphs.major[$data] ? $parent.HoverSpec.glyphs.major[$data].name : ''"></td>
-                                <td data-bind="text: $parent.HoverSpec.glyphs.minor[$data] ? $parent.HoverSpec.glyphs.minor[$data].name : ''"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- End Tooltip -->
-
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

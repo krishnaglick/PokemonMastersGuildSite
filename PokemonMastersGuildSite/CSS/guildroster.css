@@ -1,20 +1,51 @@
-﻿.Clickable
+﻿html
+{
+    margin-right: -15px;
+}
+
+.clickable
 {
     cursor: pointer;
 }
+
+.specActive
+{
+    background-color: #ffffff;
+    border-color: #dddddd #dddddd transparent;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    border-radius: 4px 4px 0 0;
+    padding: 3px;
+    text-decoration: none;
+    box-sizing: border-box;
+    list-style: none outside none;
+}
+
 .modal
 {
     overflow-y: auto;
+    font-weight: bold;
 }
-.tooltiptext
-{
-    display: none;
-}
-.popover-content
+.talents
 {
     font-size: 10px;
 }
 .stat
 {
 
+}
+.playerImg
+{
+    height: 60px;
+    width: 60px;
+}
+.center
+{
+    text-align: center;
+}
+.row
+{
+    margin-top: 15px;
 }

@@ -8,11 +8,11 @@
     });
 
     $('#showPlayer').bind('show.bs.modal', function () {
-        $("html").css("margin-right", "-15px");
+        guild_roster_view_model.setSpec(0);
     });
 });
 
-function getStats(returnedPlayer) {
+function getPrimaryStats(returnedPlayer) {
     //Calculate what stats to show per role
     var Role = typeof returnedPlayer.talents[0].selected === 'undefined' ? returnedPlayer.talents[1].spec.role : returnedPlayer.talents[0].spec.role;
     var PrimaryStats = "";
@@ -22,6 +22,16 @@ function getStats(returnedPlayer) {
         case "DPS":
             if (atrs.agi > atrs.str) { PrimaryStats = "<div class='stat'>Agility: " + atrs.agi + "</div>"; }
             else { PrimaryStats = "<div class='stat'>Strength: " + atrs.str + "</div>"; }
+            PrimaryStats += "<div class='stat'>Hit: " + parseFloat(Math.round(atrs.hitPercent * 100) / 100).toFixed(2) + "%</div>";
+            if (atrs.offHandExpertise > 0)
+            {
+                PrimaryStats += "<div class='stat'>MH Expertise: " + parseFloat(Math.round(atrs.mainHandExpertise * 100) / 100).toFixed(2) + "%</div>" +
+                                "<div class='stat'>OH Expertise: " + parseFloat(Math.round(atrs.offHandExpertise * 100) / 100).toFixed(2) + "%</div>";
+            }
+            else
+            {
+                "<div class='stat'>Expertise: " + parseFloat(Math.round(atrs.mainHandExpertise * 100) / 100).toFixed(2) + "</div>";
+            }
             break;
         case "TANK":
             PrimaryStats = "<div class='stat'>Health: " + atrs.health + "</div>" +
@@ -36,10 +46,13 @@ function getStats(returnedPlayer) {
         default:
             return "Bad Player!";
     }
-    PrimaryStats += "<div class='stat'>Haste: " + parseFloat(Math.round(atrs.haste * 100) / 100).toFixed(2) + "%</div>" +
-                    "<div class='stat'>Crit: " + parseFloat(Math.round(atrs.crit * 100) / 100).toFixed(2) + "%</div>" +
-                    "<div class='stat'>Mastery: " + parseFloat(Math.round(atrs.mastery * 100) / 100).toFixed(2) + "%</div>";
     return PrimaryStats;
+}
+
+function getSecondaryStats(returnedPlayer) {
+    return "<div class='stat'>Haste: " + parseFloat(Math.round(returnedPlayer.stats.haste * 100) / 100).toFixed(2) + "%</div>" +
+                    "<div class='stat'>Crit: " + parseFloat(Math.round(returnedPlayer.stats.crit * 100) / 100).toFixed(2) + "%</div>" +
+                    "<div class='stat'>Mastery: " + parseFloat(Math.round(returnedPlayer.stats.mastery * 100) / 100).toFixed(2) + "%</div>";
 }
 
 function getProgression(returnedPlayer) {
