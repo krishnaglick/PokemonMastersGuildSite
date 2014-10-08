@@ -32,6 +32,7 @@ GuildRosterModel.prototype.getPlayer = function (player) {
         dataType: "jsonp",
         jsonp: 'jsonp'
     }).done(function (returnedPlayer) {
+        console.log(returnedPlayer);
         self.player({
             Name: returnedPlayer.name,
             Pic: "http://us.battle.net/static-render/us/" + returnedPlayer.thumbnail,
@@ -45,21 +46,24 @@ GuildRosterModel.prototype.getPlayer = function (player) {
             Level: returnedPlayer.level,
             ilvl: returnedPlayer.items.averageItemLevelEquipped,
             Achives: returnedPlayer.achievementPoints,
-            Professions: returnedPlayer.professions
+            Professions: getProfessions(returnedPlayer)
         });
-
         $('#showPlayer').modal();
     });
 }
 
 GuildRosterModel.prototype.setSpec = function (spec) {
+    if (spec == 2)
+    {
+        spec = typeof this.player().Spec[0].selected === 'undefined' ? 1 : 0;
+    }
     this.player().HoverSpec(this.player().Spec[spec]);
     if (spec == 0) {
-        $('.mainSpec').addClass('specActive');
-        $('.offSpec').removeClass('specActive');
+        $(document).find('.mainSpec').addClass('specActive').removeClass('specInactive');
+        $(document).find('.offSpec').removeClass('specActive').addClass('specInactive');
     }
     else {
-        $('.mainSpec').removeClass('specActive');
-        $('.offSpec').addClass('specActive');
+        $(document).find('.mainSpec').removeClass('specActive').addClass('specInactive');
+        $(document).find('.offSpec').addClass('specActive').removeClass('specInactive');
     }
 }

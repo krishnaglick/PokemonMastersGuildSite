@@ -3,12 +3,18 @@
     ko.applyBindings(guild_roster_view_model);
     guild_roster_view_model.getMembers();
 
-    $('#showPlayer').on('hidden', function () {
+    $('#showPlayer').on('hidden.bs.modal', function () {
         $(this).data('modal', null);
     });
 
-    $('#showPlayer').bind('show.bs.modal', function () {
-        guild_roster_view_model.setSpec(0);
+    $('#showPlayer').on('show.bs.modal', function () {
+        guild_roster_view_model.setSpec(2);
+
+        //If there's only one spec, hide the second tab!
+        if ($('.offSpec').text() == '') {
+            $('.offSpec').toggleClass('hidden');
+            $('.mainSpec').toggleClass('col-xs-6').toggleClass('col-xs-12');
+        }
     });
 });
 
@@ -22,16 +28,8 @@ function getPrimaryStats(returnedPlayer) {
         case "DPS":
             if (atrs.agi > atrs.str) { PrimaryStats = "<div class='stat'>Agility: " + atrs.agi + "</div>"; }
             else { PrimaryStats = "<div class='stat'>Strength: " + atrs.str + "</div>"; }
-            PrimaryStats += "<div class='stat'>Hit: " + parseFloat(Math.round(atrs.hitPercent * 100) / 100).toFixed(2) + "%</div>";
-            if (atrs.offHandExpertise > 0)
-            {
-                PrimaryStats += "<div class='stat'>MH Expertise: " + parseFloat(Math.round(atrs.mainHandExpertise * 100) / 100).toFixed(2) + "%</div>" +
-                                "<div class='stat'>OH Expertise: " + parseFloat(Math.round(atrs.offHandExpertise * 100) / 100).toFixed(2) + "%</div>";
-            }
-            else
-            {
-                "<div class='stat'>Expertise: " + parseFloat(Math.round(atrs.mainHandExpertise * 100) / 100).toFixed(2) + "</div>";
-            }
+            PrimaryStats += "<div class='stat'>Hit: " + parseFloat(Math.round(atrs.hitPercent * 100) / 100).toFixed(2) + "%</div>" +
+                            "<div class='stat'>Expertise: " + parseFloat(Math.round(atrs.mainHandExpertise * 100) / 100).toFixed(2) + "</div>";
             break;
         case "TANK":
             PrimaryStats = "<div class='stat'>Health: " + atrs.health + "</div>" +
@@ -70,4 +68,25 @@ function getProgression(returnedPlayer) {
     if (hKill > 0)
         kills += "<div class='progression'>" + hKill + "/14 Heroic</div>"
     return kills;
+}
+
+function getProfessions(returnedPlayer) {
+    var profs = returnedPlayer.professions.primary;
+    var professions = "";
+    if (profs != '')
+    {
+        if(profs[0] != null && profs[1] != null)
+        {
+            professions = profs[0].name + '/' + profs[1].name;
+        }
+        else if(profs[0] != null && profs[1] == null)
+        {
+            professions = profs[0].name;
+        }
+        else
+        {
+            professions = profs[1].name;
+        }
+    }
+    return professions;
 }

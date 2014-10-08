@@ -45,7 +45,7 @@
                         <div class="col-xs-4">
                             <div data-bind="text: Name + ' - Level ' + Level"></div>
                             <div data-bind="text: getRace(Race) + ' ' + getClass(Class)"></div>
-                            <div data-bind="text: Professions.primary[0].name + '/' + Professions.primary[1].name"></div>
+                            <div data-bind="text: Professions"></div>
                         </div>
                         <div class="col-xs-4">
                             <img class="playerImg" data-bind="attr: {src: Pic, alt: Name}" />
@@ -70,8 +70,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-6 clickable mainSpec specActive" data-bind="text: Spec[0].spec.name, event: {click: $parent.setSpec(0)}"></div>
-                        <div class="col-xs-6 clickable offSpec" data-bind="text: Spec[1].spec.name, event: {click: $parent.setSpec(1)}"></div>
+                        <div class="col-xs-4"></div>
+                        <div class=" col-xs-4 clickable mainspec" data-bind="text: Spec[0].spec.name, event: {click: $parent.setSpec(0)}"></div>
+                        <div class="col-xs-4 clickable offSpec" data-bind="text: Spec[1].spec ? Spec[1].spec.name : '', event: {click: $parent.setSpec(1)}"></div>
                     </div>
 
                     <!-- Talents & Glyphs -->
