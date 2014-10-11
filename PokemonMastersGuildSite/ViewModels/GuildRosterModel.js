@@ -7,7 +7,7 @@ GuildRosterModel.prototype.getMembers = function () {
     var self = this;
     $.ajax({
         type: "GET",
-        url: 'http://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members',
+        url: 'https://us.battle.net/api/wow/guild/Blackrock/Pokemon%20Masters?fields=members',
         dataType: "jsonp",
         jsonp: 'jsonp'
     }).done(self.bindMembers.bind(self));
@@ -28,20 +28,19 @@ GuildRosterModel.prototype.getPlayer = function (player) {
     var self = this;
     $.ajax({
         type: "GET",
-        url: 'http://us.battle.net/api/wow/character/Blackrock/' + player.Name + '?fields=items,talents,professions,progression,stats',
+        url: 'https://us.battle.net/api/wow/character/Blackrock/' + player.Name + '?fields=items,talents,professions,progression,stats',
         dataType: "jsonp",
         jsonp: 'jsonp'
     }).done(function (returnedPlayer) {
-        console.log(returnedPlayer);
         self.player({
             Name: returnedPlayer.name,
-            Pic: "http://us.battle.net/static-render/us/" + returnedPlayer.thumbnail,
+            Pic: "https://us.battle.net/static-render/us/" + returnedPlayer.thumbnail,
             Class: returnedPlayer.class,
             Race: returnedPlayer.race,
             PrimaryStats: getPrimaryStats(returnedPlayer),
             SecondaryStats: getSecondaryStats(returnedPlayer),
             Spec: returnedPlayer.talents,
-            HoverSpec: ko.observable(returnedPlayer.talents[0]),
+            ActiveSpec: ko.observable(returnedPlayer.talents[0]),
             Progression: getProgression(returnedPlayer),
             Level: returnedPlayer.level,
             ilvl: returnedPlayer.items.averageItemLevelEquipped,
@@ -57,7 +56,7 @@ GuildRosterModel.prototype.setSpec = function (spec) {
     {
         spec = typeof this.player().Spec[0].selected === 'undefined' ? 1 : 0;
     }
-    this.player().HoverSpec(this.player().Spec[spec]);
+    this.player().ActiveSpec(this.player().Spec[spec]);
     if (spec == 0) {
         $(document).find('.mainSpec').addClass('specActive').removeClass('specInactive');
         $(document).find('.offSpec').removeClass('specActive').addClass('specInactive');

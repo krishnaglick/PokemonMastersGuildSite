@@ -9,11 +9,13 @@
 
     $('#showPlayer').on('show.bs.modal', function () {
         guild_roster_view_model.setSpec(2);
-
+        
         //If there's only one spec, hide the second tab!
         if ($('.offSpec').text() == '') {
             $('.offSpec').toggleClass('hidden');
-            $('.mainSpec').toggleClass('col-xs-6').toggleClass('col-xs-12');
+        }
+        if ($('.mainSpec').text() == '') {
+            $('.mainSpec').toggleClass('hidden');
         }
     });
 });

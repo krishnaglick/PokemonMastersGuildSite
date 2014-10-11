@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PokemonMastersGuildSite.TestMethods
+namespace PokemonMastersGuildSite.Actions
 {
-    public class testMethods
+    public class guildUtils
     {
         System.Random r = new System.Random();
 
@@ -24,6 +24,16 @@ namespace PokemonMastersGuildSite.TestMethods
         public string randStr()
         {
             return randStr(6);
+        }
+
+        string[] Officers = { "Prometheus", "Brutongaster", "Wounder", "Stonedmonk", "Beaconater", "Maryjaiyne" };
+
+        public bool isOfficer(string user)
+        {
+            if (Officers.Any(s => s == user))
+                return true;
+
+            return false;
         }
 
     }

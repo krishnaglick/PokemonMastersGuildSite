@@ -1,25 +1,33 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@using PokemonMastersGuildSite.Actions
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/CSS/news.css" rel="stylesheet" type="text/css" />
+@Scripts.Render("~/Scripts/GuildUtils.js")
+@Styles.Render("~/CSS/news.css")
 @{
     ViewBag.Title = "News";
 }
 
 <h1>News</h1>
-<input type="button" id="addNews" value="New Post" onclick="location.href = '@Url.Action("Create")'" />
+@{
+    if(new guildUtils().isOfficer(User.Identity.GetUserName()))
+    {
+        <input type="button" id="addNews" value="New Post" onclick="location.href = '@Url.Action("Create")'" />
+    }
+}
 
 <div class="newsWrapper">
     @{
         var pageNum = ViewBag.posts.PageNumber;
         if(pageNum > 1)
         {
-            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber-1)"><</a>;
+            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber-1)"><</a>
         }
         @ViewBag.posts.PageNumber
         if (pageNum < ViewBag.posts.PageCount)
         {
-            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber+1)">></a>;
+            <a href="~/News/Index?page=@(ViewBag.posts.PageNumber+1)">></a>
         }
     }
     @foreach(var post in ViewBag.posts)

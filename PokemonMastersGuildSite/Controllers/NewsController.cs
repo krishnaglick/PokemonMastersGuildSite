@@ -1,16 +1,16 @@
-﻿using PokemonMastersGuildSite.TestMethods;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using PagedList;
+using Microsoft.AspNet.Identity;
+using PokemonMastersGuildSite.Actions;
 
 namespace PokemonMastersGuildSite.Controllers
 {
     public class NewsController : Controller
     {
-        testMethods tm = new testMethods();
         Models.NewsStoryContext nsc = new Models.NewsStoryContext();
 
         public ActionResult Index()
@@ -25,6 +25,10 @@ namespace PokemonMastersGuildSite.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            if (!new guildUtils().isOfficer(User.Identity.GetUserName()))
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.tags = "['" + string.Join("', '", nsc.NewsStoryTags.Select(t => t.tagName).ToArray<string>()) + "']";
             return View();
         }
@@ -32,6 +36,10 @@ namespace PokemonMastersGuildSite.Controllers
         [HttpPost]
         public ActionResult Create(string postTitle, string postText, string[] tags)
         {
+            if (!new guildUtils().isOfficer(User.Identity.GetUserName()))
+            {
+                return RedirectToAction("Index");
+            }
             string succeed = "Failure";
             var newNewsStory = new Models.NewsStory();
 
@@ -51,7 +59,7 @@ namespace PokemonMastersGuildSite.Controllers
             newNewsStory.postTitle = postTitle;
             newNewsStory.postText = postText;
             newNewsStory.postDate = System.DateTime.Now;
-            newNewsStory.Username = tm.randStr();
+            newNewsStory.Username = "Prometheus";
 
             nsc.NewsStories.Add(newNewsStory);
             nsc.SaveChanges();
